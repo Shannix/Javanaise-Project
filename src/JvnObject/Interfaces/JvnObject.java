@@ -4,7 +4,7 @@
  *
  * Authors:
  */
-package rmi_project_2017.jvn;
+package JvnObject.Interfaces;
 
 import java.io.*;
 
@@ -14,77 +14,86 @@ import java.io.*;
  */
 public interface JvnObject extends Serializable {
 
+    public enum Lock {
+        NL,
+        RLC,
+        WLC,
+        RLT,
+        WLT,
+        RLT_WLC
+    }
+
     /**
      * Get a Read lock on the object
      *
      * @throws JvnException
-	*
+     *
      */
     public void jvnLockRead()
-            throws JvnException;
+            throws jvn.JvnException;
 
     /**
      * Get a Write lock on the object
      *
      * @throws JvnException
-	*
+     *
      */
     public void jvnLockWrite()
-            throws JvnException;
+            throws jvn.JvnException;
 
     /**
      * Unlock the object
      *
      * @throws JvnException
-	*
+     *
      */
     public void jvnUnLock()
-            throws JvnException;
+            throws jvn.JvnException;
 
     /**
      * Get the object identification
      *
      * @throws JvnException
-	*
+     *
      */
     public int jvnGetObjectId()
-            throws JvnException;
+            throws jvn.JvnException;
 
     /**
      * Get the object state
      *
      * @throws JvnException
-	*
+     *
      */
     public Serializable jvnGetObjectState()
-            throws JvnException;
+            throws jvn.JvnException;
 
     /**
      * Invalidate the Read lock of the JVN object
      *
      * @throws JvnException
-	*
+     *
      */
     public void jvnInvalidateReader()
-            throws JvnException;
+            throws jvn.JvnException;
 
     /**
      * Invalidate the Write lock of the JVN object
      *
      * @return the current JVN object state
      * @throws JvnException
-	*
+     *
      */
     public Serializable jvnInvalidateWriter()
-            throws JvnException;
+            throws jvn.JvnException;
 
     /**
      * Reduce the Write lock of the JVN object
      *
      * @return the current JVN object state
      * @throws JvnException
-	*
+     *
      */
     public Serializable jvnInvalidateWriterForReader()
-            throws JvnException;
+            throws jvn.JvnException;
 }
