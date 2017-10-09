@@ -5,7 +5,7 @@
  * Authors: 
  */
 
-package rmi_project_2017.jvn;
+package jvn;
 
 /**
  * Interface of a JVN Exception. 

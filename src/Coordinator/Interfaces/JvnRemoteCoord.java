@@ -1,27 +1,21 @@
 /**
  * *
- * JAVANAISE Implementation JvnServerImpl class Contact:
+ * JAVANAISE API Contact:
  *
  * Authors:
  */
-package rmi_project_2017.jvn;
+package Coordinator.Interfaces;
 
-import java.rmi.server.UnicastRemoteObject;
-import java.io.Serializable;
+import JvnObject.Interfaces.JvnObject;
+import java.rmi.*;
+import java.io.*;
+import jvn.JvnException;
+import Server.Interfaces.JvnRemoteServer;
 
-public class JvnCoordImpl
-        extends UnicastRemoteObject
-        implements JvnRemoteCoord {
-
-    /**
-     * Default constructor
-     *
-     * @throws JvnException
-     *
-     */
-    private JvnCoordImpl() throws Exception {
-        // to be completed
-    }
+/**
+ * Remote Interface of the JVN Coordinator
+ */
+public interface JvnRemoteCoord extends Remote {
 
     /**
      * Allocate a NEW JVN object id (usually allocated to a newly created JVN
@@ -30,12 +24,8 @@ public class JvnCoordImpl
      * @throws java.rmi.RemoteException,JvnException
      *
      */
-    @Override
     public int jvnGetObjectId()
-            throws java.rmi.RemoteException, JvnException {
-        // to be completed 
-        return 0;
-    }
+            throws java.rmi.RemoteException, jvn.JvnException;
 
     /**
      * Associate a symbolic name with a JVN object
@@ -48,9 +38,7 @@ public class JvnCoordImpl
      *
      */
     public void jvnRegisterObject(String jon, JvnObject jo, JvnRemoteServer js)
-            throws java.rmi.RemoteException, JvnException {
-        // to be completed 
-    }
+            throws java.rmi.RemoteException, jvn.JvnException;
 
     /**
      * Get the reference of a JVN object managed by a given JVN server
@@ -61,10 +49,7 @@ public class JvnCoordImpl
      *
      */
     public JvnObject jvnLookupObject(String jon, JvnRemoteServer js)
-            throws java.rmi.RemoteException, JvnException {
-        // to be completed 
-        return null;
-    }
+            throws java.rmi.RemoteException, jvn.JvnException;
 
     /**
      * Get a Read lock on a JVN object managed by a given JVN server
@@ -76,10 +61,7 @@ public class JvnCoordImpl
      *
      */
     public Serializable jvnLockRead(int joi, JvnRemoteServer js)
-            throws java.rmi.RemoteException, JvnException {
-        // to be completed
-        return null;
-    }
+            throws java.rmi.RemoteException, JvnException;
 
     /**
      * Get a Write lock on a JVN object managed by a given JVN server
@@ -91,10 +73,7 @@ public class JvnCoordImpl
      *
      */
     public Serializable jvnLockWrite(int joi, JvnRemoteServer js)
-            throws java.rmi.RemoteException, JvnException {
-        // to be completed
-        return null;
-    }
+            throws java.rmi.RemoteException, JvnException;
 
     /**
      * A JVN server terminates
@@ -104,7 +83,6 @@ public class JvnCoordImpl
      *
      */
     public void jvnTerminate(JvnRemoteServer js)
-            throws java.rmi.RemoteException, JvnException {
-        // to be completed
-    }
+            throws java.rmi.RemoteException, JvnException;
+
 }
