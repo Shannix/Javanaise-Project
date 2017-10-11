@@ -109,16 +109,15 @@ public class JvnCoordImpl extends UnicastRemoteObject implements JvnRemoteCoord 
      *
      */
     @Override
-    public synchronized Serializable jvnLockRead(int joi, JvnRemoteServer js) throws java.rmi.RemoteException, JvnException {
+    public Serializable jvnLockRead(int joi, JvnRemoteServer js) throws java.rmi.RemoteException, JvnException {
         ObjectManager joM = getObjectManagerById(joi);
         JvnObjectImpl jo = joM.getJvnObjectImpl();
-        joM.getJvnObjectImpl().setState(Lock.NL);
-        
-        Serializable joSer = joM.getWriterServer().jvnInvalidateWriter(joi);
+
+        Serializable joSer = joM.getWriterServer().jvnInvalidateWriterForReader(joi);
         jvnUnlock(joi, joSer);
 
-        joM.getWriterServer().jvnInvalidateWriterForReader(joi);
         joM.getReaderServers().add(js);
+
         store.put(getSymbolById(joi), joM);
 
         return jo.getObjectRemote();
@@ -140,20 +139,22 @@ public class JvnCoordImpl extends UnicastRemoteObject implements JvnRemoteCoord 
 
         Serializable joSer = joM.getWriterServer().jvnInvalidateWriter(joi);
         jvnUnlock(joi, joSer);
-        joM.setWriterServer(js);
 
         joM.getReaderServers().stream().forEach(server -> invalidateReader(server, joi));
         joM.removeReaderServers();
+
         joM.getReaderServers().add(js);
+        joM.setWriterServer(js);
 
         joM.getJvnObjectImpl().setState(Lock.WLT);
+        store.put(getSymbolById(joi), joM);
+
         return jo.getObjectRemote();
     }
 
-    private synchronized void jvnUnlock(int joi, Serializable objectRemote) throws RemoteException, JvnException {
+    private void jvnUnlock(int joi, Serializable objectRemote) throws RemoteException, JvnException {
         ObjectManager joM = getObjectManagerById(joi);
         JvnObjectImpl jo = joM.getJvnObjectImpl();
-        jo.setState(Lock.NL);
         jo.setObjectRemote(objectRemote);
         store.put(getSymbolById(joi), joM);
     }
@@ -205,7 +206,7 @@ public class JvnCoordImpl extends UnicastRemoteObject implements JvnRemoteCoord 
     public static void main(String[] args) {
         try {
             JvnCoordImpl coord = new JvnCoordImpl();
-            Registry registry = LocateRegistry.createRegistry(2020);
+            Registry registry = LocateRegistry.createRegistry(1099);
             registry.bind("Coordinator", coord);
             System.err.println("Coordinator ready on " + registry);
         } catch (RemoteException e) {

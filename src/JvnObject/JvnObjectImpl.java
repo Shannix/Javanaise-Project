@@ -4,9 +4,6 @@ import JvnObject.Interfaces.JvnObject;
 import JvnObject.Interfaces.JvnObject.Lock;
 import static Server.JvnServerImpl.js;
 import java.io.Serializable;
-import static java.lang.Thread.sleep;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import jvn.JvnException;
 
 public class JvnObjectImpl implements Serializable, JvnObject {
@@ -26,12 +23,6 @@ public class JvnObjectImpl implements Serializable, JvnObject {
 
     @Override
     public void jvnLockRead() throws JvnException {
-        try {
-            sleep(1000);
-        } catch (InterruptedException ex) {
-            Logger.getLogger(JvnObjectImpl.class.getName()).log(Level.SEVERE, null, ex);
-        }
-
         switch (state) {
             case NL:
                 JvnObjectImpl jo = (JvnObjectImpl) js.jvnLockRead(id);
@@ -95,7 +86,7 @@ public class JvnObjectImpl implements Serializable, JvnObject {
             try {
                 wait();
             } catch (InterruptedException ex) {
-                Logger.getLogger(JvnObjectImpl.class.getName()).log(Level.SEVERE, null, ex);
+                System.err.println(ex);
             }
         }
 
@@ -118,7 +109,6 @@ public class JvnObjectImpl implements Serializable, JvnObject {
 
     @Override
     public synchronized Serializable jvnInvalidateWriterForReader() throws JvnException {
-
         while (state == Lock.WLT) {
             try {
                 wait();
@@ -126,7 +116,7 @@ public class JvnObjectImpl implements Serializable, JvnObject {
                 System.err.println(ex);
             }
         }
-        
+
         state = Lock.RLC;
         return objectRemote;
     }

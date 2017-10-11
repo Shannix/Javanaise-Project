@@ -40,7 +40,7 @@ public class JvnServerImpl extends UnicastRemoteObject
      */
     private JvnServerImpl() throws Exception {
         super();
-        reg = LocateRegistry.getRegistry("localhost", 2020);
+        reg = LocateRegistry.getRegistry("localhost", 1099);
         look_up = (JvnRemoteCoord) reg.lookup("Coordinator");
         cache = null;
     }
