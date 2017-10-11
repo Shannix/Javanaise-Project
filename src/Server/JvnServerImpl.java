@@ -17,8 +17,6 @@ import java.io.*;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import jvn.JvnException;
@@ -40,7 +38,7 @@ public class JvnServerImpl extends UnicastRemoteObject
      */
     private JvnServerImpl() throws Exception {
         super();
-        reg = LocateRegistry.getRegistry("localhost", 2020);
+        reg = LocateRegistry.getRegistry("localhost", 1099);
         look_up = (JvnRemoteCoord) reg.lookup("Coordinator");
         cache = null;
     }

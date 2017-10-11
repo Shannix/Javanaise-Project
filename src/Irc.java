@@ -12,6 +12,7 @@ import java.awt.*;
 import java.awt.event.*;
 
 import java.io.*;
+import static java.lang.Thread.sleep;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import jvn.JvnException;
@@ -46,7 +47,27 @@ public class Irc {
             }
             // create the graphical part of the Chat application
             new Irc(jo);
+            /*int i = 0;
+            sleep(5000);
+            while (i <= 10) {
+                // lock the object in read mode
+                jo.jvnLockRead();
+                // invoke the method
+                String s = ((Sentence) (jo.jvnGetObjectState())).read();
+                System.out.println("READ " + s);
+                //unlock the object
+                jo.jvnUnLock();
 
+                // get the value to be written from the buffer
+                s = "Ecriture" + "_" + i++;
+                System.out.println("WRITE " + s);
+                // lock the object in write mode
+                jo.jvnLockWrite();
+                // invoke the method
+                ((Sentence) (jo.jvnGetObjectState())).write(s);
+                jo.jvnUnLock();
+                sleep(2000);
+            }*/
         } catch (Exception e) {
             System.out.println("IRC problem : " + e);
         }
@@ -82,7 +103,7 @@ public class Irc {
         frame.add(disconnect_button);
 
         Button unlock_button = new Button("unlock");
-        unlock_button.addActionListener(new disconnectListener(this));
+        unlock_button.addActionListener(new unlockListener(this));
         frame.add(unlock_button);
 
         frame.setSize(545, 201);
@@ -99,12 +120,21 @@ class unlockListener implements ActionListener {
         irc = i;
     }
 
-    @Override
+    /**
+     * Management of user events
+     *
+     */
     public void actionPerformed(ActionEvent e) {
         try {
+            // get the value to be written from the buffer
+            String s = irc.data.getText();
+
+            // unlock the object
             irc.sentence.jvnUnLock();
-        } catch (JvnException ex) {
-            Logger.getLogger(disconnectListener.class.getName()).log(Level.SEVERE, null, ex);
+
+            System.out.println("UNLOCK");
+        } catch (JvnException je) {
+            System.out.println("IRC problem  : " + je.getMessage());
         }
     }
 }
@@ -150,9 +180,8 @@ class readListener implements ActionListener {
             // invoke the method
             String s = ((Sentence) (irc.sentence.jvnGetObjectState())).read();
 
-            // unlock the object
-            irc.sentence.jvnUnLock();
-
+            //unlock the object
+            //irc.sentence.jvnUnLock();
             // display the read value
             irc.data.setText(s);
             irc.text.append(s + "\n");
@@ -185,12 +214,11 @@ class writeListener implements ActionListener {
 
             // lock the object in write mode
             irc.sentence.jvnLockWrite();
-
             // invoke the method
             ((Sentence) (irc.sentence.jvnGetObjectState())).write(s);
 
             // unlock the object
-            irc.sentence.jvnUnLock();
+            //irc.sentence.jvnUnLock();
         } catch (JvnException je) {
             System.out.println("IRC problem  : " + je.getMessage());
         }
