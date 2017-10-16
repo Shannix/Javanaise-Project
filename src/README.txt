@@ -14,8 +14,3 @@ How run Burst :
 . Run 'JvnCoordImpl.java' 
 . Run 'SpecIrc.java' you can run ever Burstclient you want
 . Look the BurstClient logs
-
-
-In progress :
- 
-. BurstClient with threads.
