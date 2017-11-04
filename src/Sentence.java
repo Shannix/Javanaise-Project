@@ -6,7 +6,7 @@
  * Authors:
  */
 
-public class Sentence implements java.io.Serializable {
+public class Sentence implements ISentence, java.io.Serializable {
 
     String data;
 
