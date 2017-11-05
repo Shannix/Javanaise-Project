@@ -29,6 +29,7 @@ public class JvnServerImpl extends UnicastRemoteObject
     public static Registry reg;
     public JvnRemoteCoord look_up;
     static JvnObjectImpl cache;
+     
 
     /**
      * Default constructor

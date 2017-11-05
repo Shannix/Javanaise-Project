@@ -31,18 +31,7 @@ public class Irc {
      */
     public static void main(String argv[]) {
         try {
-            // initialize 
-        
-             
-             
-            // create the graphical part of the Chat application
-            
-            
-            
-            
-            
-            //new Irc((ISentence) new InvocationProxy("IRC", new Sentence()));
-            
+                 
              new Irc((ISentence) InvocationProxy.newInstance(new Sentence(),"IRC" )    );
             
             

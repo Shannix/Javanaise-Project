@@ -30,7 +30,7 @@ public class JvnCoordImpl extends UnicastRemoteObject implements JvnRemoteCoord 
     public JvnRemoteServer look_up;
     public Map<String, ObjectManager> store;
     public AtomicInteger counter_object;
-
+    public int maxObject ;  
     /**
      * Default constructor
      *
@@ -39,6 +39,7 @@ public class JvnCoordImpl extends UnicastRemoteObject implements JvnRemoteCoord 
      */
     private JvnCoordImpl() throws Exception {
         store = new HashMap();
+        maxObject = 5;
         counter_object = new AtomicInteger(0);
     }
 
@@ -70,10 +71,22 @@ public class JvnCoordImpl extends UnicastRemoteObject implements JvnRemoteCoord 
     public synchronized void jvnRegisterObject(String jon, JvnObject jo, JvnRemoteServer js) throws java.rmi.RemoteException, jvn.JvnException {
         JvnObjectImpl joImpl = (JvnObjectImpl) jo;
         joImpl.setState(Lock.WLT);
-
         ObjectManager objM = new ObjectManager(joImpl, js);
         objM.setWriterServer(js);
-        store.put(jon, objM);
+        if( store.size() < maxObject ){
+             store.put(jon, objM);
+         }else{
+            //delete the oldest element
+            String key =  store.entrySet().iterator().next().getKey();
+            store.remove(key);
+            
+            store.put(jon, objM);      
+            
+            counter_object.getAndDecrement();
+            
+        }
+        
+        
     }
 
     /**

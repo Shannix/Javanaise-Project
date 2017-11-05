@@ -34,7 +34,8 @@ public class InvocationProxy implements InvocationHandler {
 		
 		if(ob == null){ 
                     
-                  ob = js.jvnCreateObject(object);
+             ob = js.jvnCreateObject(object);
+                 if(ob == null){ throw new JvnException("Sorry, the coord cache is full"); }
                   
                   ob.jvnUnLock();
                
