@@ -3,7 +3,7 @@ package JvnObject;
 import JvnObject.Interfaces.JvnObject;
 import JvnObject.Interfaces.JvnObject.Lock;
 import static Server.JvnServerImpl.js;
-import Spec.BurstSentence;
+
 import java.io.Serializable;
 import jvn.JvnException;
 

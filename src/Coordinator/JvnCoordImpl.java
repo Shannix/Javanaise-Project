@@ -39,7 +39,7 @@ public class JvnCoordImpl extends UnicastRemoteObject implements JvnRemoteCoord 
      */
     private JvnCoordImpl() throws Exception {
         store = new HashMap();
-        maxObject = 5;
+        maxObject = 1000;
         counter_object = new AtomicInteger(0);
     }
 
